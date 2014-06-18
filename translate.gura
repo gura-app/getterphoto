@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+import(mswin)
+
+transDicts = %{
+`ja => %{
+'Source'							=> 'コピー元'
+'Destination'						=> 'コピー先'
+'Target'							=> 'ターゲット'
+'Original'							=> '元の名前'
+'Renamed'							=> '変更後'
+'Refresh'							=> '更新'
+'Getter'							=> '写真取得'
+'Stamper'							=> 'ファイル名変更'
+'Choose a destination directory'	=> 'コピー先のディレクトリを選択してください'
+'Choose a directory containing image files' => \
+	'画像ファイルを含むディレクトリを選択してください'
+'Get Photo'							=> '実行'
+'Do Rename'							=> '実行'
+'(copied one exists)'				=> '(コピーが存在)'
+}
+}
+
+(transDict = transDicts.get(sys.langcode)) && string.translator {|x| transDict.get(x, x)}
