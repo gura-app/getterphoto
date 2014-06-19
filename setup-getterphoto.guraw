@@ -7,5 +7,6 @@ helper.setup.execute(
 	shortName		=> 'getterphoto'
 	fileNameScript	=> 'getterphoto.guraw'
 	fileNameIcon	=> 'getterphoto.ico'
-	fileNamesExtra	=> []
+	fileNamesExtra	=> ['translate.gura']
+	fileNamesClean	=> [path.join(sys.cfgdir, 'getterphoto.yml')]
 )
