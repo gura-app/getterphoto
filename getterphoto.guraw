@@ -189,6 +189,7 @@ Page_Getter = class(wx.Panel) {
 				bytesProgress += buff.len()
 			}
 			this.Update()
+			wx.App.GetInstance().Yield()
 		}
 		this.gauge.SetValue(0)
 		this.Update()
