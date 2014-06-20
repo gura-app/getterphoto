@@ -9,12 +9,12 @@ transDicts = %{
 'Original'							=> '元の名前'
 'Renamed'							=> '変更後'
 'Refresh'							=> '更新'
-'Getter'							=> '写真取得'
+'Getter'							=> '写真取り込み'
 'Stamper'							=> 'ファイル名変更'
 'Choose a destination directory'	=> 'コピー先のディレクトリを選択してください'
 'Choose a directory containing image files' => \
 	'画像ファイルを含むディレクトリを選択してください'
-'Get Photo'							=> '実行'
+'Get Photo'							=> '取り込み'
 'Do Rename'							=> '実行'
 '(copied one exists)'				=> '(コピーが存在)'
 }
