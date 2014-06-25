@@ -44,7 +44,9 @@ g = module {
 	imgBoxChecked:public		= -1
 	imgBoxUnckecked:public		= -1
 	imgBoxDisabled:public		= -1
+	doneFlag:public				= false
 }
+
 //-----------------------------------------------------------------------------
 // LoadConfig / SaveConfig
 //-----------------------------------------------------------------------------
@@ -141,7 +143,7 @@ Page_Getter = class(wx.Panel) {
 			wx.StaticText(this, wx.ID_ANY, 'Source Folder'$, size => wx.Size(wdLabel, -1)) {|ctrl|
 				hbox.Add(ctrl, wx.SizerFlags().Align(wx.ALIGN_CENTER_VERTICAL))
 			}
-			wx.TextCtrl(this, ID_TE_DirNameSrc, '') {|ctrl|
+			wx.TextCtrl(this, ID_TE_DirNameSrc, '', style => wx.TE_READONLY) {|ctrl|
 				hbox.Add(ctrl, wx.SizerFlags(1).Expand())
 				this.textDirNameSrc = ctrl
 			}
@@ -154,7 +156,7 @@ Page_Getter = class(wx.Panel) {
 			wx.StaticText(this, wx.ID_ANY, 'Destination Folder'$, size => wx.Size(wdLabel, -1)) {|ctrl|
 				hbox.Add(ctrl, wx.SizerFlags().Align(wx.ALIGN_CENTER_VERTICAL))
 			}
-			wx.TextCtrl(this, ID_TE_DirNameDst, '') {|ctrl|
+			wx.TextCtrl(this, ID_TE_DirNameDst, '', style => wx.TE_READONLY) {|ctrl|
 				hbox.Add(ctrl, wx.SizerFlags(1).Expand())
 				this.textDirNameDst = ctrl
 			}
@@ -201,24 +203,30 @@ Page_Getter = class(wx.Panel) {
 			}
 			this.listFileNames = ctrl
 		}
-		//this.Bind(wx.EVT_COMBOBOX, ID_CB_DirNameSrc) {
-		//	g.dirNameSrc= comboDirNameSrc.GetStringSelection()
-		//	this.UpdateFileNames()
-		//}
-		this.Bind(wx.EVT_BUTTON, ID_BTN_DirNameDst) {
-			dirName = this.textDirNameDst.GetValue()
+		this.Bind(wx.EVT_BUTTON, ID_BTN_DirNameSrc) {
+			dirNameSrc = this.textDirNameSrc.GetValue()
 			style = wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST
-			dlg = wx.DirDialog(this,
-						'Choose a destination folder'$
-						dirName, style)
+			dlg = wx.DirDialog(this, 'Choose a source folder'$, dirNameSrc, style)
 			if (dlg.ShowModal() == wx.ID_OK) {
-				dirName = dlg.GetPath()
-				this.textDirNameDst.SetValue(dirName)
-				g.dirNameDst = dirName
+				dirNameSrc = dlg.GetPath()
+				this.textDirNameSrc.SetValue(dirNameSrc)
+				g.dirNameSrc = dirNameSrc
+				this.UpdateFileNames()
+			}
+		}
+		this.Bind(wx.EVT_BUTTON, ID_BTN_DirNameDst) {
+			dirNameDst = this.textDirNameDst.GetValue()
+			style = wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST
+			dlg = wx.DirDialog(this, 'Choose a destination folder'$, dirNameDst, style)
+			if (dlg.ShowModal() == wx.ID_OK) {
+				dirNameDst = dlg.GetPath()
+				this.textDirNameDst.SetValue(dirNameDst)
+				g.dirNameDst = dirNameDst
 			}
 		}
 		this.textDirNameSrc.SetValue(g.dirNameSrc)
 		this.textDirNameDst.SetValue(g.dirNameDst)
+		//this.UpdateFileNames()
 	}
 	UpdateFileNames() = {
 		this.listFileNames.DeleteAllItems()
@@ -227,10 +235,8 @@ Page_Getter = class(wx.Panel) {
 			this.btnGetPhoto.Enable(false)
 			return
 		}
-		pathNames = path.walk(dirName, nil, g.patternImgList*,
-								g.patternAviList*):file:list
+		pathNames = path.walk(dirName, nil, g.patternImgList*, g.patternAviList*):file
 		dirNameDst = this.textDirNameDst.GetValue()
-		this.pathNames = pathNames
 		pathNames.each {|pathName, idx|
 			pathNameDst = MakeUniqPathName(pathName, dirNameDst, true)
 			wx.ListItem {|item|
@@ -247,8 +253,17 @@ Page_Getter = class(wx.Panel) {
 				item.SetText(path.filename(pathNameDst || '(copied one exists)'$))
 				this.listFileNames.SetItem(item)
 			}
+			if (idx % 10 == 0) {
+				this.listFileNames.EnsureVisible(idx)
+				this.Refresh()
+				this.Update()
+			}
+			wx.App.GetInstance().Yield()
+			g.doneFlag && return
 		}
-		this.btnGetPhoto.Enable(!pathNames.isempty())
+		this.pathNames = [pathNames]
+		this.btnGetPhoto.Enable(!this.pathNames.isempty())
+		this.listFileNames.EnsureVisible(0)
 	}
 	GetPhoto(dirNameDst:string, idx:number):map = {
 		this.listFileNames.SetFocus()
@@ -299,6 +314,10 @@ Frame = class(wx.Frame) {
 			outerBox.Add(note, wx.SizerFlags(1).Expand())
 			note.AddPage(Page_Getter(note), 'Getter'$, false, g.imgCameraCopy)
 			//note.AddPage(Page_Stamper(note), 'Stamper'$, false, g.imgDriveEdit)
+		}
+		this.Bind(wx.EVT_CLOSE) {|event|
+			g.doneFlag = true
+			event.Skip()
 		}
 		this.Bind(wx.EVT_MOVE) {|event|
 			this.UpdateSizePosInfo()

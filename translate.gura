@@ -13,6 +13,7 @@ transDicts = %{
 'Refresh'							=> '更新'
 'Getter'							=> '写真取り込み'
 'Stamper'							=> 'ファイル名変更'
+'Choose a source folder'			=> 'コピー元のフォルダを選択してください'
 'Choose a destination folder'		=> 'コピー先のフォルダを選択してください'
 'Choose a folder that contains image files' => \
 	'画像ファイルを含むフォルダを選択してください'
