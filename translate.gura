@@ -3,17 +3,19 @@ import(mswin)
 
 transDicts = %{
 `ja => %{
-'Source'							=> 'コピー元'
-'Destination'						=> 'コピー先'
+'Source Folder'						=> 'コピー元フォルダ'
+'Destination Folder'				=> 'コピー先フォルダ'
+'Source File'						=> 'コピー元ファイル'
+'Destination File'					=> 'コピー先ファイル'
 'Target'							=> 'ターゲット'
 'Original'							=> '元の名前'
 'Renamed'							=> '変更後'
 'Refresh'							=> '更新'
 'Getter'							=> '写真取り込み'
 'Stamper'							=> 'ファイル名変更'
-'Choose a destination directory'	=> 'コピー先のディレクトリを選択してください'
-'Choose a directory containing image files' => \
-	'画像ファイルを含むディレクトリを選択してください'
+'Choose a destination folder'		=> 'コピー先のフォルダを選択してください'
+'Choose a folder that contains image files' => \
+	'画像ファイルを含むフォルダを選択してください'
 'Get Photo'							=> '取り込み'
 'Do Rename'							=> '実行'
 '(copied one exists)'				=> '(コピーが存在)'
