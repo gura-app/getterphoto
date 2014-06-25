@@ -39,7 +39,7 @@ tk.mainwindow {|mw|
 			items:extern = []
 		} else {
 			items:extern = path.dir(dirname,
-					patternImgList*, patternAviList*):icase:list:file {|filename|
+					patternImgList*, patternAviList*):list:file {|filename|
 				item = tv.Item(values => [path.filename(filename)])
 				item.filename:public = filename
 				item
@@ -55,7 +55,7 @@ tk.mainwindow {|mw|
 		dirnameDst = path.join(var_dirnameDst.string,
 					'%04d%02d%02d xxx' % [mtime.year, mtime.month, mtime.day])
 		!path.exists(dirnameDst) && fs.mkdir(dirnameDst)
-		if ((path.match(patternAviList, item.filename):icase).or()) {
+		if (path.match(patternAviList, item.filename).or()) {
 			dirnameDst = path.join(dirnameDst, 'AVI')
 			!path.exists(dirnameDst) && fs.mkdir(dirnameDst)
 		}
