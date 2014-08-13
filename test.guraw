@@ -77,12 +77,19 @@ SaveConfig() = {
 InitializeResource() = {
 	I(src:binary) = image(base64.reader(src))
 	g.imageList = wx.ImageList(16, 16, true)
+	println('check1')
 	g.imgImage:public			= g.imageList.Add(I(resource.Image_png))
+	println('check2')
 	g.imgBoxChecked:public		= g.imageList.Add(I(resource.BoxChecked_png))
+	println('check3')
 	g.imgBoxUnckecked:public	= g.imageList.Add(I(resource.BoxUnchecked_png))
+	println('check4')
 	g.imgBoxDisabled:public		= g.imageList.Add(I(resource.BoxDisabled_png))
+	println('check5')
 	g.imgCameraCopy:public		= g.imageList.Add(I(resource.camera_go_png))
+	println('check6')
 	g.imgDriveEdit:public		= g.imageList.Add(I(resource.drive_edit_png))
+	println('check')
 }
 
 //-----------------------------------------------------------------------------
