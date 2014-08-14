@@ -1,0 +1,57 @@
+#!/usr/bin/env gura
+import(wx)
+import(cairo)
+
+//-----------------------------------------------------------------------------
+// SourceSelector
+//-----------------------------------------------------------------------------
+SourceSelector = class(wx.Panel) {
+	__init__(parent:wx.Window) = {|parent, wx.ID_ANY|
+		this.brushBg = wx.Brush(wx.Colour(255, 255, 255), wx.BRUSHSTYLE_SOLID)
+		this.bmpScreen = nil
+		this.UpdateContent()
+		this.Bind(wx.EVT_SIZE) {|event| this.OnSize(event)}
+		this.Bind(wx.EVT_PAINT) {|event| this.OnPaint(event)}
+	}
+	UpdateContent() = {
+		[wdClient, htClient] = this.GetClientSizeWH()
+		this.bmpScreen = wx.BitmapWH(wdClient, htClient)
+		wx.MemoryDC(this.bmpScreen) {|dc|
+			dc.SetBackground(this.brushBg)
+			dc.Clear()
+		}
+	}
+	OnSize(event:wx.SizeEvent) = {
+		this.UpdateContent()
+		event.Skip()
+	}
+	OnPaint(event:wx.PaintEvent) = {
+		dc = wx.PaintDC(this)
+		x = this.GetScrollPos(wx.HORIZONTAL)
+		y = this.GetScrollPos(wx.VERTICAL)
+		this.bmpScreen && dc.DrawBitmap(this.bmpScreen, -x, -y, false)
+		dc = nil
+	}
+}
+
+//-----------------------------------------------------------------------------
+// Frame
+//-----------------------------------------------------------------------------
+Frame = class(wx.Frame) {
+	__init__() = {|nil, wx.ID_ANY, 'simple', size => wx.Size(300, 400)|
+		SourceSelector(this)
+	}
+}
+
+//-----------------------------------------------------------------------------
+// App
+//-----------------------------------------------------------------------------
+App = class(wx.App) {
+	OnInit() = {
+		frame = Frame()
+		frame.Show()
+		true
+	}
+}
+
+wx.IMPLEMENT_APP(App)
