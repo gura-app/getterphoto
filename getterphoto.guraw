@@ -26,7 +26,7 @@ main = module {
 		cfg:public = %{}
 	}
 	main() = {
-		cfg.store():default {
+		cfg.store():timid {
 			'xFrame'			=> -1
 			'yFrame'			=> -1
 			'wdFrame'			=> 480
