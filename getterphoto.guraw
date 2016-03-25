@@ -26,7 +26,7 @@ main = module {
 		cfg:public = %{}
 	}
 	if (!isdefined(binary.len)) {
-		// implement binary#len() method for 0.7.0 or later
+		// implement binary#len() method for Gura 0.7.0 or later
 		binary.len() = this.size
 	}
 	main() = {
