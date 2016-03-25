@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import(mswin)
-
 transDicts = %{
 `ja => %{
 'Source Folder'						=> 'コピー元フォルダ'

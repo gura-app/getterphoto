@@ -25,6 +25,10 @@ main = module {
 	} catch {
 		cfg:public = %{}
 	}
+	if (!isdefined(binary.len)) {
+		// implement binary#len() method for 0.7.0 or later
+		binary.len() = this.size
+	}
 	main() = {
 		cfg.append():timid {
 			'xFrame'			=> -1
@@ -133,7 +137,13 @@ Page_Getter = class(wx.Panel) {
 		this.UpdateSourceDirNames()
 	}
 	UpdateSourceDirNames() = {
-		dirNames = path.join(main.charsAtoZ + ':', 'DCIM')
+		if (sys.platform == `mswin) {
+			dirNames = path.join(main.charsAtoZ + ':', 'DCIM')
+		} elsif (sys.platform == `darwin) {
+			dirNames = path.join(path.dir('/Volumes'), 'DCIM')
+		} else {
+			dirnames = []
+		}
 		dirNames = dirNames.filter(path.exists(dirNames)):list
 		this.comboSourceDirNames.Clear()
 		if (dirNames.len() == 0) {
