@@ -359,7 +359,7 @@ Panel = class(wx.Panel) {
 // Frame
 //-----------------------------------------------------------------------------
 Frame = class(wx.Frame) {
-	__init__(parent:wx.Window) = {|parent, wx.ID_ANY, 'Getter Photo',
+	__init__(parent:wx.Window:nil) = {|parent, wx.ID_ANY, 'Getter Photo',
 							pos => wx.Point(main.cfg['xFrame', 'yFrame']*),
 							size => wx.Size(main.cfg['wdFrame', 'htFrame']*)|
 		this.SetIcon(wx.IconFromXPMData(mainicon_xpm))
